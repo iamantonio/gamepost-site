@@ -9,22 +9,26 @@
 <li>Text a photo (and an optional caption) to the GamePost number. You'll get a short reply saying whether it posted.</li>
 </ol>
 <p>Texts you get from GamePost are only setup confirmations, replies about photos you sent, and posting status. GamePost never sends marketing or promotional texts.</p>
-<p id="thanks" class="box" style="display:none">Thanks! I got your sign-up. I'll confirm with your club and follow up.</p>
 <h2>Sign up as a photo sender</h2>
-<form method="POST" action="https://formsubmit.co/vargas.tony@gmail.com">
+<form id="signup" method="POST" action="https://formsubmit.co/ajax/vargas.tony@gmail.com">
 <input type="hidden" name="_subject" value="New GamePost sender sign-up">
 <input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="https://iamantonio.github.io/gamepost-site/?submitted=1">
 <label>Name<input name="name" required></label>
 <label>Email<input name="email" type="email" required></label>
 <label>Mobile phone (the number you'll text photos from)<input name="mobile" type="tel" required></label>
 <label>Club and team<input name="club_team" placeholder="Club name, team or program" required></label>
 <label>Your role<select name="role" required><option value="">Choose one</option><option>Coach</option><option>Team parent / volunteer</option><option>Team manager</option><option>Club board or admin</option><option>Other</option></select></label>
 <label class="c"><input type="checkbox" name="sms_consent" value="yes"><span>Optional: By checking this box, I agree to receive text messages from GamePost by Antonio Vargas at the mobile number provided: setup confirmations, replies about photos I submit, and posting status. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. Consent is not a condition of purchase. No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. See the <a href="privacy.html">Privacy Policy</a> and <a href="terms.html">Terms</a>.</span></label>
-<button type="submit">Sign up</button>
+<button type="submit" id="go">Sign up</button>
 </form>
+<p id="thanks" class="box" style="display:none" role="status">Thanks! Your sign-up was received. I'll confirm with your club and follow up. If you checked the SMS box, you'll get one text from GamePost confirming you're set up once your club approves you. Reply STOP anytime to opt out, HELP for help.</p>
+<p id="err" class="box" style="display:none" role="alert">Sorry, the sign-up didn't go through. Please try again, or email your name, mobile number, club/team and whether you want texts to <a href="mailto:vargas.tony@gmail.com">vargas.tony@gmail.com</a>.</p>
 <p style="font-size:13px">Leave the box unchecked if you don't want texts. I won't add your number to GamePost or text you; I'll reply by email instead.</p>
 <h2>Photos of kids</h2>
 <p>Only send photos you took or have the right to share, and only if your club's photo policy and the families involved allow it to be posted. If a photo should come down, email vargas.tony@gmail.com or call 312-833-1313 and I'll remove it from the club's pages. Details are in the <a href="privacy.html">Privacy Policy</a>.</p>
-<script>if(location.search.indexOf("submitted=1")>-1)document.getElementById("thanks").style.display="block";</script>
+<script>
+document.getElementById("signup").addEventListener("submit",function(e){e.preventDefault();var f=this,b=document.getElementById("go");b.disabled=true;b.textContent="Sending...";
+var d=new FormData(f);d.set("sms_consent",f.sms_consent.checked?"yes - checked box (consent text shown on page)":"no");d.set("submitted_at",new Date().toISOString());
+fetch(f.action,{method:"POST",headers:{"Accept":"application/json"},body:d}).then(function(r){if(!r.ok)throw 0;f.style.display="none";document.getElementById("thanks").style.display="block";}).catch(function(){document.getElementById("err").style.display="block";b.disabled=false;b.textContent="Sign up";});});
+</script>
 <footer>GamePost is operated by Antonio Vargas (sole proprietor) · Brookfield, IL 60513 · 312-833-1313 · vargas.tony@gmail.com<br><a href="index.html">Home</a> · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms &amp; SMS Terms</a></footer></body></html>
